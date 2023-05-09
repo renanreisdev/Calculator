@@ -6,55 +6,167 @@
 }
 
 body {
-    background: rgb(0,111,205);
-    background: linear-gradient(90deg, rgb(0,111,205) 0%, rgb(139, 184, 224) 50%, rgb(0,111,205) 100%);
+    background: rgb(48, 48, 48);
+    background: linear-gradient(90deg, rgb(44, 44, 44) 0%, rgb(55, 55, 55) 50%, rgb(65, 65, 65) 100%);
 }
 
 header {
     padding: 1.5em 0;
+    
     text-align: center;
+    color: #FFF;
+    
+    animation: moveColors 2s infinite;
 }
 
-section {
+@keyframes moveColors {
+    from {
+        color:#FFF;
+    }
+
+    to {
+        color: rgb(228, 243, 255);
+    }
+}
+
+.calculator {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translateX(-50%) translateY(-50%);
+
     display: flex;
-    justify-content: center;
-    width: 100vw;
-}
+    flex-direction: column;
+    justify-content: space-between;
 
-section table {
-    width: 20em;
-    height: 25em;
-    padding: 0.1em;
+    /*
+    width: 75vw;
+    max-width: 20em;
+    height: 75vh;
+    max-height: 23em;
+    */
+    padding: 0.8em 0.4em;
 
     border-radius: 0.5em;
-    box-shadow: 0 0 1em rgba(0,111,205,1);
+
+    animation: fade 2s;
 }
 
-table th {
-    padding: 0.3em;
+@keyframes fade {
+    from {
+        opacity: 0;
+    }
 
-    border: 1px solid rgba(0, 0, 0, 0.2);
-    border-radius: 0.3em;
-    background-color: #FFF;
-    text-align: right;
+    to {
+        opacity: 1;
+    }
+}
+
+.shadow {
+    z-index: -1;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+
+    box-shadow: 0 0 1em rgba(0,111,205,1);
+    border-radius: 0.5em;
+
+    animation: move-shadow 1.5s infinite cubic-bezier(0, 0.01, 0, 0.01) alternate-reverse;
+}
+
+@keyframes move-shadow {
+    from {
+        box-shadow: -0.1em -0.1em 1em rgba(0,111,205,1);
+    }
+
+    33% {
+        box-shadow: 0.1em -0.1em 1em rgba(0,111,205,1);
+    }
+
+    66% {
+        box-shadow: 0.1em 0.1em 1em rgba(0,111,205,1);
+    }
+
+    to {
+        box-shadow: -0.1em 0.1em 1em rgba(0,111,205,1);
+    }
+}
+
+.display {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: flex-end;
+    
+    margin-bottom: 1em;
+    padding: 0.2em 0.5em 0 1.8em;
+
+    background-color: #eeeeee;
+    border-radius: 0.5em;
+    box-shadow: 0 0 0.3em rgba(0,111,205,0.7);
+}
+
+.display-memory {
+    position: absolute;
+    top: 0.7em;
+    left: 0.7em;
+    color: #EEEEEE;
+}
+
+.historic {
+    font-size: 0.6em;
+    color: #EEEEEE;
+}
+
+.results {
     font-size: 1.3em;
+    color: #999;
+}
+
+.buttons-area {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 0.2em;
 }
 
 .button {
-    width: 4em;
+    width: auto;
+    height: 2.5em;
+    padding: 0 0.3em;
 
     border: 1px solid rgba(0, 0, 0, 0.2);
     border-radius: 0.3em;
     background-color: rgba(0,111,205,0.2);
+
     text-align: center;
-    cursor: pointer;
     font-size: 1.3em;
+    color: #EEEEEE;
+    
+    cursor: pointer;
 }
 
-.button-arrow,
-.button-mrc,
-.button-mDecrease,
-.button-mSum,
+.button-sum {
+    height: auto;
+    grid-column-start: 4;
+    grid-column-start: 4;
+    grid-row-start: 4;
+    grid-row-end: 6;
+}
+
+.button-equal {
+    height: auto;
+    grid-column-start: 5;
+    grid-column-start: 5;
+    grid-row-start: 4;
+    grid-row-end: 6;
+}
+
+.button-backspace,
+.button-memory,
+.button-memory-decrease,
+.button-memory-sum,
 .button-divide,
 .button-percent,
 .button-x,
@@ -64,7 +176,7 @@ table th {
     background-color: rgba(0,111,205,0.5);
 }
 
-.button-c {
+.button-clean {
     background-color: rgba(169, 56, 210, 0.5);
 }
 
@@ -73,7 +185,7 @@ table th {
     background-color: rgba(0,111,205,0.8);
 }
 
-.button-c:hover {
+.button-clean:hover {
     transition: 0.4s;
     background-color: rgba(169, 56, 210, 0.8);
 }
@@ -121,6 +233,7 @@ footer {
     height: 3em;
 
     text-align: center;
+    color: #FFFFFF;
 }
 
 @media (max-width: 560px) {
