@@ -15,84 +15,35 @@
 
     <section class="calculator">
         <div class="shadow"></div>
-        <div class="display">
-            <span class="display-memory">M</span>
-            <input type="text" class="results" value="0" readonly/>
+        <div class="screen">
+            <span class="screen-memory">M</span>
+            <input type="text" class="previous-operation" placeholder="0" />
+            <input type="text" class="current-operation" placeholder="0" />
         </div>
-        <div class="buttons-area">
-            <button class="button button-others button-backspace">-></button>
-            <button class="button button-others button-memory">MRC</button>
-            <button class="button button-others button-memory-subtract">M-</button>
-            <button class="button button-others button-memory-add">M+</button>
-            <button class="button button-others button-clean">C</button>
-            <button class="button button-numbers button-number7">7</button>
-            <button class="button button-numbers button-number8">8</button>
-            <button class="button button-numbers button-number9">9</button>
-            <button class="button button-signal button-percent">%</button>
-            <button class="button button-operations button-division">/</button>
-            <button class="button button-numbers button-number4">4</button>
-            <button class="button button-numbers button-number5">5</button>
-            <button class="button button-numbers button-number6">6</button>
-            <button class="button button-operations button-multiply">X</button>
-            <button class="button button-operations button-subtract">-</button>
-            <button class="button button-numbers button-number1">1</button>
-            <button class="button button-numbers button-number2">2</button>
-            <button class="button button-numbers button-number3">3</button>
-            <button class="button button-operations button-add">+</button>
-            <button class="button button-operations button-equal">=</button>
-            <button class="button button-numbers button-number0">0</button>
-            <button class="button button-numbers button-numberDouble0">00</button>
-            <button class="button button-signal button-decimal">.</button>
-        </div>
+        <button class="second-color">DEL</button>
+        <button class="second-color disabled memory-rec">MRC</button>
+        <button class="second-color">M-</button>
+        <button class="second-color">M+</button>
+        <button class="highlight-color">C</button>
+        <button>7</button>
+        <button>8</button>
+        <button>9</button>
+        <button>%</button>
+        <button>/</button>
+        <button>4</button>
+        <button>5</button>
+        <button>6</button>
+        <button>X</button>
+        <button>-</button>
+        <button>1</button>
+        <button>2</button>
+        <button>3</button>
+        <button class="span-two second-color">+</button>
+        <button class="span-two second-color">=</button>
+        <button>0</button>
+        <button>00</button>
+        <button>.</button>
     </section>
-
-    <!--
-    <section>
-        <table>
-            <thead>
-                <th colspan="5">
-                    <p class="historic">0</p>
-                    <p class="result">0</p>
-                </th>
-            </thead>
-            <tbody>
-                <tr>
-                    <td class="button button-arrow">-></td>
-                    <td class="button button-mrc">MRC</td>
-                    <td class="button button-mDecrease">M-</td>
-                    <td class="button button-mSum">M+</td>
-                    <td class="button button-c">C</td>
-                </tr>
-                <tr>
-                    <td class="button button-7">7</td>
-                    <td class="button button-8">8</td>
-                    <td class="button button-9">9</td>
-                    <td class="button button-percent">%</td>
-                    <td class="button button-divide">/</td>
-                </tr>
-                <tr>
-                    <td class="button button-4">4</td>
-                    <td class="button button-5">5</td>
-                    <td class="button button-6">6</td>
-                    <td class="button button-x">X</td>
-                    <td class="button button-decrease">-</td>
-                </tr>
-                <tr>
-                    <td class="button button-1">1</td>
-                    <td class="button button-2">2</td>
-                    <td class="button button-3">3</td>
-                    <td rowspan="2" class="button button-sum">+</td>
-                    <td rowspan="2" class="button button-equal">=</td>
-                </tr>
-                <tr>
-                    <td class="button button-0">0</td>
-                    <td class="button button-00">00</td>
-                    <td class="button button-dot">.</td>                
-                </tr>
-            </tbody>
-        </table>
-    </section>
-    -->
 
     <footer>
         <p>Desenvolvido por: <strong>Renan M. Reis</strong> - 2023</p>

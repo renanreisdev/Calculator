@@ -1,204 +1,244 @@
-const fieldHistoric = document.querySelector('.historic');
-const fieldResult = document.querySelector('.results');
-let memory = 0;
-let activeMemory = 0;
-let equal = 0;
+const buttons = document.querySelectorAll('.calculator > button');
+const buttonMemoryRec = document.querySelector('.memory-rec');
+const previousOperationText = document.querySelector('.previous-operation');
+const currentOperationText = document.querySelector('.current-operation');
+const mathOperations = ['+', '-', 'X', '/'];
 
-const buttons = document.querySelectorAll('.button');
-const buttonsNumbers = document.querySelectorAll('.button-numbers');
-const buttonsOthers = document.querySelectorAll('.button-others');
-const buttonsSignal = document.querySelectorAll('.button-signal');
-const buttonsOperations = document.querySelectorAll('.button-operations');
-
-const sum = () => eval(fieldResult.value);
-
-const acceptsKeys = {
-    Numpad0() {
-        buttonActions(document.querySelector('.button-number0'));
-    },
-    Numpad1() {
-        buttonActions(document.querySelector('.button-number1'));
-    },
-    Numpad2() {
-        buttonActions(document.querySelector('.button-number2'));
-    },
-    Numpad3() {
-        buttonActions(document.querySelector('.button-number3'));
-    },
-    Numpad4() {
-        buttonActions(document.querySelector('.button-number4'));
-    },
-    Numpad5() {
-        buttonActions(document.querySelector('.button-number5'));
-    },
-    Numpad6() {
-        buttonActions(document.querySelector('.button-number6'));
-    },
-    Numpad7() {
-        buttonActions(document.querySelector('.button-number7'));
-    },
-    Numpad8() {
-        buttonActions(document.querySelector('.button-number8'));
-    },
-    Numpad9() {
-        buttonActions(document.querySelector('.button-number9'));
-    },
-    NumpadMultiply() {
-        buttonActions(document.querySelector('.button-multiply'));
-    },
-    NumpadSubtract() {
-        buttonActions(document.querySelector('.button-subtract'));
-    },
-    NumpadAdd() {
-        buttonActions(document.querySelector('.button-add'));
-    },
-    NumpadEnter() {
-        buttonActions(document.querySelector('.button-equal'));
-    },
-    NumpadDecimal() {
-        buttonActions(document.querySelector('.button-decimal'));
-    },
-    Backspace() {
-        buttonActions(document.querySelector('.button-backspace'));
+class Calculator {
+    constructor(previousOperationText, currentOperationText) {
+        this.previousOperationText = previousOperationText;
+        this.currentOperationText = currentOperationText;
+        this.currentOperation = '';
+        this.memory = 0;
+        this.memoryTrigger = 0;
     }
-}
 
-const buttonActions = (target) => {
-    const buttonClass = target.className;
-    const checkOperation = fieldResult.value.substring(fieldResult.value.length - 1, fieldResult.value.length) !== ' ' ? true : false;
-    let value;
+    addDigit(digit) {
+        this.memoryTrigger = 0;
+        this.validateScreenDigits(this.currentOperationText, digit);
+    }
 
-    if (buttonClass.indexOf('button-numbers') > 0) {
-        if (fieldResult.value === '0' || equal === 1) {
-            if (buttonClass.indexOf('button-numberDouble0') === -1) {
-                fieldResult.value = target.innerHTML;
-            }
-            equal = 0;
-        } else {
-            fieldResult.value += target.innerHTML;
+    validateScreenDigits(operationState, digit) {
+        if (this.currentOperationText.value === '') {
+            this.currentOperation = '';
         }
-    } else if (buttonClass.indexOf('button-decimal') > 0) {
-        if (fieldResult.value.indexOf('.') === -1) {
-            fieldResult.value += target.innerHTML;
-        }
-    } else if (buttonClass.indexOf('button-operations') > 0) {
-        if (buttonClass.indexOf('button-equal') > 0) {
-            if (isNaN(fieldResult.value) && checkOperation) {
-                equal = 1;
-                console.log(fieldResult.value.substring(fieldResult.value.length - 1, fieldResult.value.length));
-                fieldResult.value = sum();
-            }
-        } else if (!isNaN(fieldResult.value)) {
-            if (buttonClass.indexOf('button-multiply') > 0) {
-                fieldResult.value += ' * ';
-            } else {
-                fieldResult.value += ` ${target.innerHTML} `;
-            }
-        } else {
-            if (checkOperation) {
-                if (buttonClass.indexOf('button-multiply') > 0) {
-                    fieldResult.value = `${sum()} * `;
+
+        if (operationState.value === '') {
+            if (+digit !== 0) {
+                if (digit === '.') {
+                    this.currentOperation = `0${digit}`;
                 } else {
-                    fieldResult.value = `${sum()} ${target.innerHTML} `;
+                    this.currentOperation += digit;
                 }
-            } else if (buttonClass.indexOf('button-multiply') > 0) {
-                fieldResult.value = fieldResult.value.replace(/[/\*\-\+]/g, '*');
             } else {
-                fieldResult.value = fieldResult.value.replace(/[/\*\-\+]/g, target.innerHTML);
+                return;
             }
-        }
-        equal = 0;
-    } else if (buttonClass.indexOf('button-percent') > 0) {    
-        if (checkOperation) {
-            let percent;
-
-            if (fieldResult.value.indexOf('-') > 0) {
-                value = fieldResult.value.substring(0, fieldResult.value.indexOf('-') - 1);
-                percent = fieldResult.value.substring(fieldResult.value.indexOf('-') + 1, fieldResult.value.length);
-                fieldResult.value = Number(value) - (percent * (value / 100));
-            } else if (fieldResult.value.indexOf('+') > 0) {
-                value = fieldResult.value.substring(0, fieldResult.value.indexOf('+') - 1);
-                percent = fieldResult.value.substring(fieldResult.value.indexOf('+') + 1, fieldResult.value.length);
-                fieldResult.value = Number(value) + (percent * (value / 100));
-            } else if (fieldResult.value.indexOf('*') > 0) {
-                value = fieldResult.value.substring(0, fieldResult.value.indexOf('*') - 1);
-                percent = fieldResult.value.substring(fieldResult.value.indexOf('*') + 1, fieldResult.value.length);
-                fieldResult.value = Number(value) * (percent / 100);
-            } else if (fieldResult.value.indexOf('/') > 0) {
-                value = fieldResult.value.substring(0, fieldResult.value.indexOf('/') - 1);
-                percent = fieldResult.value.substring(fieldResult.value.indexOf('/') + 1, fieldResult.value.length);
-                fieldResult.value = Number(value) / (percent / 100);
+        } else {
+            if (operationState.value.includes('.') && digit === '.') {
+                return;
             }
-            equal = 1;
+            
+            this.currentOperation += digit;
         }
-    } else if (buttonClass.indexOf('button-clean') > 0) {
-        fieldResult.value = '0';
-    } else if (buttonClass.indexOf('button-backspace') > 0) {
-        fieldResult.value = fieldResult.value.substring(0, fieldResult.value.length - 1);
-        
-        fieldResult.value.length === 0 ? fieldResult.value = '0' : fieldResult.value;
-    } else if (buttonClass.indexOf('button-memory-add') > 0) {
-        if (fieldResult.value.indexOf('+') > 0) {
-            console.log('soma')
-            value = fieldResult.value.substring(0, fieldResult.value.indexOf('+') - 1);
-        } else if (fieldResult.value.indexOf('-') > 0) {
-            console.log('menos')
-            value = fieldResult.value.substring(0, fieldResult.value.indexOf('-') - 1);
-        } else if (fieldResult.value.indexOf('*') > 0) {
-            console.log('vezes')
-            value = fieldResult.value.substring(0, fieldResult.value.indexOf('*') - 1);
-        } else if (fieldResult.value.indexOf('/') > 0) {
-            console.log('divisão')
-            value = fieldResult.value.substring(0, fieldResult.value.indexOf('/') - 1);
-        } else {
-            value = fieldResult.value;
-        }
-        equal = 1;
-        memory += Number(value);
-        activeMemory = 1;
-        document.querySelector('.display-memory').style.color = '#000000';
-    } else if (buttonClass.indexOf('button-memory-subtract') > 0) {
-        if (fieldResult.value.indexOf('+') > 0) {
-            value = fieldResult.value.substring(0, fieldResult.value.indexOf('+') - 1);
-        } else if (fieldResult.value.indexOf('-') > 0) {
-            value = fieldResult.value.substring(0, fieldResult.value.indexOf('-') - 1);
-        } else if (fieldResult.value.indexOf('*') > 0) {
-            value = fieldResult.value.substring(0, fieldResult.value.indexOf('*') - 1);
-        } else if (fieldResult.value.indexOf('/') > 0) {
-            value = fieldResult.value.substring(0, fieldResult.value.indexOf('/') - 1);
-        } else {
-            value = fieldResult.value;
-        }
-        equal = 1;
-        memory -= Number(value);
-        activeMemory = 1;
-        document.querySelector('.display-memory').style.color = '#000000';
-    }
-    
-    if (buttonClass.indexOf('button-memory') > 0 && target.innerHTML === 'MRC') {
-        if (activeMemory === 2) {
-            memory = 0;
-            activeMemory = 0;
-            document.querySelector('.display-memory').style.color = '#EEEEEE';
-        } else if (activeMemory === 1) {
-            fieldResult.value += memory;
-            activeMemory = 2;
-        }
-    } else if (memory !== 0) {
-        activeMemory = 1;
+        this.updateScreen();
     }
 
-    console.log('activeMemory = ' + activeMemory)
+    processFunctions(operation) {
+        if (this.currentOperationText.value === '' && this.previousOperationText.value === '' && this.memory === 0) {
+            return;
+        }
 
-    fieldResult.style.color = fieldResult.value === '0' ? '#999999' : '#000000'
+        switch(operation) {
+            case 'DEL':
+                this.processDelOperator();
+            break;
+
+            case 'C':
+                this.processCleanOperator();
+            break;
+
+            case 'M+':
+                this.processMAddOperator();
+            break;
+
+            case 'M-':
+                this.processMSubOperator();
+            break;
+
+            case 'MRC':
+                this.processMRecOperator();
+            break;
+
+            case '=':
+                this.processEqual();
+                break;
+
+            case '%':
+                this.processPercent();
+                break;
+
+            default:
+                return;
+        }
+    }
+
+    processDelOperator() {
+        this.memoryTrigger = 0;
+        this.currentOperationText.value = this.currentOperationText.value.slice(0, -1);
+    }
+
+    processCleanOperator() {
+        this.memoryTrigger = 0;
+        this.currentOperation = '';
+        this.updateScreen();
+        this.currentOperationText.value = '';
+        this.previousOperationText.value = '';
+        this.currentOperationText.placeholder = '0';
+    }
+
+    processMAddOperator() {
+        if (+this.currentOperationText.value === 0) {
+            return;
+        }
+
+        this.memory += +this.currentOperationText.value;
+        this.memoryTrigger = 0;
+        buttonMemoryRec.classList.remove('disabled');
+    }
+
+    processMSubOperator() {
+        if (+this.currentOperationText.value === 0) {
+            return;
+        }
+
+        this.memory -= +this.currentOperationText.value;
+        this.memoryTrigger = 0;
+        buttonMemoryRec.classList.remove('disabled');
+    }
+
+    processMRecOperator() {
+        if (this.memory !== 0 && this.memoryTrigger === 0) {
+            this.currentOperationText.value = this.memory;
+            this.currentOperation = this.memory;
+            this.memoryTrigger++;
+        } else {
+            this.memory = 0;
+            this.memoryTrigger = 0;
+            buttonMemoryRec.classList.add('disabled');
+        }
+    }
+
+    processEqual() {
+        const operation = this.previousOperationText.value.split(' ')[1];
+
+        this.processOperation(operation);
+    }
+
+    processPercent() {
+        const previous = this.previousOperationText.value.split(' ')[0];
+        const operation = this.previousOperationText.value.split(' ')[1];
+
+        if (operation === 'X' || operation === '/') {
+            this.currentOperation = this.currentOperation / 100;
+        } else if (operation === '+' || operation === '-') {
+            this.currentOperation = previous * (this.currentOperation / 100);
+        }
+
+        this.currentOperationText.value = this.currentOperation;
+    }
+
+    processOperation(operation) {
+        if (this.currentOperationText.value === "") {
+            if (this.previousOperationText.value !== "") {
+                this.changeOperation(operation);
+            }
+            return;
+        }
+
+        let oldOperation = null;
+        if (mathOperations.includes(this.previousOperationText.value.split(' ')[1])) {
+            oldOperation = this.previousOperationText.value.split(' ')[1];
+        }
+
+        let operationValue;
+        const previous = +this.previousOperationText.value.split(' ')[0];
+        const current = +this.currentOperationText.value;
+
+        this.memoryTrigger = 0;
+
+        switch(oldOperation === null ? operation : oldOperation) {
+            case '+':
+                operationValue = previous + current;
+                this.updateScreen(operation, operationValue, current, previous);
+            break;
+
+            case '-':
+                operationValue = previous - current;
+                this.updateScreen(operation, operationValue, current, previous);
+            break;
+
+            case 'X':
+                operationValue = previous * current;
+                this.updateScreen(operation, operationValue, current, previous);
+            break;
+
+            case '/':
+                operationValue = previous / current;
+                this.updateScreen(operation, operationValue, current, previous);
+            break;
+
+            default:
+                return;
+        }
+    }
+
+    changeOperation(operation) {
+        if (!mathOperations.includes(operation)) {
+            return;
+        }
+
+        this.previousOperationText.value = this.previousOperationText.value.slice(0, -1) + operation;
+    }
+
+    updateScreen(
+        operation = null,
+        operationValue = null,
+        current = null,
+        previous = null
+    ) {
+
+        if (this.currentOperation.length > 0 && operationValue === null) {
+            if (this.currentOperationText === '') {
+                this.currentOperationText.value = current;
+            } else {
+                this.currentOperationText.value = this.currentOperation;
+            }
+        } else {
+            if (previous === 0) {
+                operationValue = current;
+            }
+
+            this.previousOperationText.value = `${operationValue} ${operation}`;
+            this.currentOperationText.value = '';
+            this.currentOperationText.placeholder = this.currentOperation;
+        }
+    }
 }
 
-document.querySelector('body').addEventListener('keyup', (e) => {
-    if (acceptsKeys[e.code]) {
-        acceptsKeys[e.code]();
-    }
+const calculator = new Calculator(previousOperationText, currentOperationText);
+
+buttons.forEach((button) => {
+    button.addEventListener('click', (e) => {
+        const value = e.target.innerText;
+        const validateOperations = ['+', '-', 'X', '/'];
+        const validateFunctions = ['DEL', 'C', 'MRC', 'M-', 'M+', '=', '%'];
+
+        if (+value >= 0 || value.includes('.')) {
+            calculator.addDigit(value);
+        } else if (validateOperations.includes(value)) {
+            calculator.processOperation(value);
+        } else if (validateFunctions.includes(value)) {
+            calculator.processFunctions(value);
+        }
+    });
 });
-
-for (const button of buttons) {
-    button.addEventListener('click', (e) => { buttonActions(e.target) });
-}
