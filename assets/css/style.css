@@ -190,7 +190,7 @@ header {
     background-color: rgba(169, 56, 210, 0.8);
 }
 
-.span-two {
+.calculator > button.span-two {
     height: auto;
     grid-row: span 2;
 }
