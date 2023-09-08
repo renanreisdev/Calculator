@@ -1,6 +1,6 @@
 ## 💻 Sobre o projeto
 
-Calculator é uma calculadora desenvolvida para pratricar meus conhecimentos em javascript. [View Demo](https://memory-game-chi-jade.vercel.app/)
+Calculator é uma calculadora desenvolvida para pratricar meus conhecimentos em javascript. [View Demo](https://renanreisdev.github.io/Calculator/)
 
 ## 🎨 Layout
 ### Web
